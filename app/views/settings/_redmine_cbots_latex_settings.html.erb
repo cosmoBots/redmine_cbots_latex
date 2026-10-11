@@ -1,0 +1,13 @@
+<p>
+  <label for="settings_python_bin"><%= l(:label_redmine_cbots_latex_python_bin) %></label>
+  <%= text_field_tag 'settings[python_bin]', @settings['python_bin'], size: 60,
+        placeholder: '/usr/bin/python3' %>
+  <em class="info"><%= l(:text_redmine_cbots_latex_python_bin_hint) %></em>
+</p>
+
+<p>
+  <label for="settings_cache_dir"><%= l(:label_redmine_cbots_latex_cache_dir) %></label>
+  <%= text_field_tag 'settings[cache_dir]', @settings['cache_dir'], size: 60,
+        placeholder: File.join(Rails.root, 'tmp', 'redmine_cbots_latex') %>
+  <em class="info"><%= l(:text_redmine_cbots_latex_cache_dir_hint) %></em>
+</p>

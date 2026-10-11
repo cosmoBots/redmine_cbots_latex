@@ -1,0 +1,8 @@
+es:
+  label_redmine_cbots_latex_python_bin: Intérprete Python para renderizar fórmulas estáticas
+  label_redmine_cbots_latex_cache_dir: Directorio de caché de imágenes de fórmulas
+  text_redmine_cbots_latex_python_bin_hint: >
+    Python debe tener matplotlib instalado. Si no está disponible, MathJax seguirá
+    funcionando en el navegador y el renderizado estático conservará el texto original.
+  text_redmine_cbots_latex_cache_dir_hint: >
+    Directorio escribible donde se guardan en caché las imágenes generadas.

@@ -1,0 +1,8 @@
+en:
+  label_redmine_cbots_latex_python_bin: Python binary for static formula rendering
+  label_redmine_cbots_latex_cache_dir: Formula image cache directory
+  text_redmine_cbots_latex_python_bin_hint: >
+    Python must have matplotlib installed. If it is unavailable, browser-side
+    MathJax still works and static formula rendering falls back to the original text.
+  text_redmine_cbots_latex_cache_dir_hint: >
+    Writable directory used to cache generated formula images.
