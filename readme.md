@@ -62,6 +62,10 @@ estática se omite de forma segura y el contenido original se conserva.
 - Python 3 + matplotlib son opcionales y sólo se usan para el renderizado
   estático a PNG.
 
-Licencia: GNU GPL v3, conforme a la licencia del código del que se extrajeron
-las macros y el renderizador. El renderizador se conserva con atribución al
-plugin de origen.
+## Licencia y contacto
+
+Licencia: GNU GPL v3 (consulta [`LICENSE`](LICENSE)), conforme a la licencia
+del código del que se extrajeron las macros y el renderizador. El renderizador
+se conserva con atribución al plugin de origen.
+
+Contacto: [cosmobots.eu@gmail.com](mailto:cosmobots.eu@gmail.com).
