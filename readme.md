@@ -12,12 +12,13 @@ Jupyter.
 El renderizador se extrajo de
 [redmine_notebook_preview](https://github.com/cosmoBots/redmine_notebook_preview);
 la vista previa de notebooks consume su API para exportar fórmulas.
+El repositorio del plugin es
+[cosmoBots/redmine_cbots_latex](https://github.com/cosmoBots/redmine_cbots_latex).
 
 ## Instalación
 
 Instala el directorio del plugin como `plugins/redmine_cbots_latex` y reinicia
-Redmine. No añade tablas ni requiere migraciones. El repositorio independiente
-del plugin aún está pendiente de crear/publicar.
+Redmine. No añade tablas ni requiere migraciones.
 
 ## Macros
 
