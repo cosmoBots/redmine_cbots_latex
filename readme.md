@@ -4,10 +4,10 @@ Plugin independiente para Redmine que añade macros LaTeX y una API Ruby para
 renderizar fórmulas como imágenes en HTML estático. No depende de cosmoSys ni de
 Jupyter.
 
-> **EXPERIMENTAL:** Está disponible para evaluación, pero su cobertura y
-> compatibilidad aún no se consideran asentadas. Se probará en el flujo de
-> despliegue existente, sin crear ramas o variantes adicionales sólo para
-> aislarla; sus interfaces y comportamiento todavía pueden cambiar.
+> **EXPERIMENTAL:** La funcionalidad funciona. Su integración actual en deploy
+> es provisional, a la espera de que Iván la incorpore a una estrategia más
+> modular y mantenible; esta etiqueta no indica una limitación funcional
+> conocida.
 
 El renderizador se extrajo de
 [redmine_notebook_preview](https://github.com/cosmoBots/redmine_notebook_preview);
