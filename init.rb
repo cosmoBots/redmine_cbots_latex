@@ -2,7 +2,7 @@ Redmine::Plugin.register :redmine_cbots_latex do
   name        'Redmine Cbots LaTeX'
   author      'cosmoBots'
   description 'Renders LaTeX macros in Redmine content and provides static HTML formula rendering.'
-  version     '0.1.0'
+  version     '0.1.1'
   author_url  'https://github.com/cosmoBots'
 
   settings default: {

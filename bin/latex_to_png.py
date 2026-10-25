@@ -33,6 +33,7 @@ def normalize(tex):
     the root of "(" followed by x). mathtext insists on braces.
     """
     tex = " ".join(tex.split())
+    tex = re.sub(r"\\[lr]vert\b", r"\\vert", tex)
     return re.sub(r"\\sqrt\s*(\\[A-Za-z]+|[^\s{\[\\])", r"\\sqrt{\1}", tex)
 
 

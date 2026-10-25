@@ -163,7 +163,10 @@ module RedmineCbotsLatex
       image['alt'] = formula.tex
       image['width'] = (width * CSS_DPI / DPI).round.to_s
       image['height'] = (height * CSS_DPI / DPI).round.to_s
-      image['style'] = 'vertical-align: middle'
+      # Writer ignores legacy HTML dimensions during import. Keep explicit CSS
+      # dimensions too, so high-DPI formula rasters retain their intended size
+      # in exported paragraphs and table cells.
+      image['style'] = "vertical-align: middle; width: #{image['width']}px; height: #{image['height']}px"
       return image unless formula.display
 
       block = Nokogiri::XML::Node.new('div', document)

@@ -78,6 +78,8 @@ class LatexRendererTest < ActiveSupport::TestCase
     assert_includes result, 'data:image/png;base64,'
 
     image = Nokogiri::HTML5.fragment(result).at_css('img')
+    assert_includes image['style'], "width: #{image['width']}px"
+    assert_includes image['style'], "height: #{image['height']}px"
     png = Base64.strict_decode64(image['src'].split(',', 2).last)
     assert_equal "\x89PNG\r\n\x1A\n".b, png.byteslice(0, 8)
 
@@ -94,6 +96,17 @@ class LatexRendererTest < ActiveSupport::TestCase
 
     assert_not_includes result, '<img'
     assert_includes result, 'align'
+  end
+
+  test 'render_html supports left and right absolute value delimiters' do
+    python = latex_python
+    skip 'python with matplotlib is not available' unless python
+
+    html = '<p>\\(\\ln\\lvert x\\rvert+C\\) and \\(e^{-a\\lvert t\\rvert}\\)</p>'
+    result = LatexRenderer.render_html(html, python_bin: python, cache_dir: @tmp_dir)
+
+    assert_equal 2, Nokogiri::HTML5.fragment(result).css('img').size
+    assert_not_includes result, '\\(\\ln'
   end
 
   private
