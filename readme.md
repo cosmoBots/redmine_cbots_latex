@@ -1,7 +1,6 @@
 # Redmine Cbots LaTeX
 
-La versión **0.1.1** mantiene las dimensiones tipográficas en la exportación
-estática mediante CSS explícito y admite `\lvert`/`\rvert` como valor absoluto.
+Versión **0.1.1**.
 
 Plugin independiente para Redmine que añade macros LaTeX y una API Ruby para
 renderizar fórmulas como imágenes en HTML estático. No depende de cosmoSys ni de
@@ -49,10 +48,9 @@ no requieren esa dependencia. El plugin no intercepta automáticamente todos los
 exportadores de Redmine; el plugin consumidor debe invocar la API en su salida
 estática.
 
-La exportación de informes de cosmoSys invoca esta API antes de importar el
-HTML en Writer. Las imágenes declaran ancho y alto tanto en atributos HTML como
-en CSS para mantener su tamaño tipográfico. Los delimitadores de valor absoluto
-`\lvert` y `\rvert` se normalizan a `\vert` para mathtext.
+La exportación de informes de cosmoSys incluye las fórmulas como imágenes
+conservando su tamaño tipográfico. Se admiten `\lvert` y `\rvert` para
+representar el valor absoluto.
 
 El plugin Notebook Preview puede usar esta API para convertir fórmulas de la
 vista previa al exportar documentos estáticos.
