@@ -53,6 +53,26 @@ class LatexRendererTest < ActiveSupport::TestCase
   end
 
   # ---------------------------------------------------------------------------
+  # formula_targets
+  # ---------------------------------------------------------------------------
+  MIXED_HTML = '<p>wiki $x$ and ${A} y ${B}</p>' \
+               '<p><span class="latex-preview-content">\\(y^2\\)</span></p>' \
+               '<div class="redmine-latex-content"><p>notebook $z$</p></div>'.freeze
+
+  test 'formula_targets takes formulas anywhere by default' do
+    fragment = Nokogiri::HTML5.fragment(MIXED_HTML)
+    formulas = LatexRenderer.formula_targets(fragment).flat_map { |_, pieces| pieces.grep(LatexRenderer::Formula) }
+    assert_equal ['x', '{A} y', 'y^2', 'z'], formulas.map(&:tex)
+  end
+
+  test 'formula_targets with marked_only takes only macro and marked containers' do
+    fragment = Nokogiri::HTML5.fragment(MIXED_HTML)
+    targets = LatexRenderer.formula_targets(fragment, marked_only: true)
+    formulas = targets.flat_map { |_, pieces| pieces.grep(LatexRenderer::Formula) }
+    assert_equal ['y^2', 'z'], formulas.map(&:tex)
+  end
+
+  # ---------------------------------------------------------------------------
   # render_html
   # ---------------------------------------------------------------------------
   test 'render_html returns the html untouched when python is not available' do
@@ -85,6 +105,17 @@ class LatexRendererTest < ActiveSupport::TestCase
 
     assert_includes result, '<pre>$$ not math $$</pre>'
     assert_not_includes result, '\\pi r^2 $$'
+  end
+
+  test 'render_html with marked_only leaves wiki dollar text alone' do
+    python = latex_python
+    skip 'python with matplotlib is not available' unless python
+
+    html = '<p>price $x$</p><p><span class="latex-preview-content">\\(y^2\\)</span></p>'
+    result = LatexRenderer.render_html(html, python_bin: python, cache_dir: @tmp_dir, marked_only: true)
+
+    assert_equal 1, Nokogiri::HTML5.fragment(result).css('img').size
+    assert_includes result, 'price $x$'
   end
 
   test 'render_html leaves a formula that cannot be rendered as text' do

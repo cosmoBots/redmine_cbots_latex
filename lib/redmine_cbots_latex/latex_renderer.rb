@@ -20,6 +20,9 @@ module RedmineCbotsLatex
     TIMEOUT = 60 # seconds
     CACHE_VERSION = 'v1'.freeze
     SKIP_ELEMENTS = %w[pre code script style textarea].freeze
+    # Containers whose math MathJax draws in the browser: the macros and
+    # content marked by a consumer plugin (e.g. notebook previews).
+    MARKED_CLASSES = %w[latex-preview-content redmine-latex-content].freeze
 
     # Display math: $$ ... $$ and \[ ... \]. Inline math: \( ... \) and $ ... $.
     # Spaces next to a single $ are allowed, as Jupyter and MathJax do. The
@@ -54,7 +57,10 @@ module RedmineCbotsLatex
     end
 
     # Returns the HTML with every renderable formula replaced by an <img>.
-    def self.render_html(html, python_bin: nil, cache_dir: nil)
+    # With marked_only: true, only formulas inside MARKED_CLASSES are taken, so a
+    # static export shows as math exactly what the browser shows as math (wiki
+    # text with "$" stays text on both).
+    def self.render_html(html, python_bin: nil, cache_dir: nil, marked_only: false)
       settings = Setting.plugin_redmine_cbots_latex || {}
       python_bin = settings['python_bin'] if python_bin.blank?
       cache_dir = settings['cache_dir'] if cache_dir.blank?
@@ -64,13 +70,7 @@ module RedmineCbotsLatex
       return html unless File.executable?(python_bin)
 
       fragment = Nokogiri::HTML5.fragment(html)
-      targets = []
-      fragment.xpath('.//text()').each do |node|
-        next if node.ancestors.any? { |ancestor| SKIP_ELEMENTS.include?(ancestor.name) }
-
-        pieces = split_text(node.text)
-        targets << [node, pieces] if pieces.any? { |piece| piece.is_a?(Formula) }
-      end
+      targets = formula_targets(fragment, marked_only: marked_only)
       return html if targets.empty?
 
       formulas = targets.flat_map { |_, pieces| pieces.grep(Formula) }.uniq(&:key)
@@ -79,6 +79,22 @@ module RedmineCbotsLatex
 
       targets.each { |node, pieces| replace_text_node(node, pieces, images) }
       fragment.to_html
+    end
+
+    # [text node, pieces] for every text node that contains at least one formula.
+    def self.formula_targets(fragment, marked_only: false)
+      fragment.xpath('.//text()').filter_map do |node|
+        ancestors = node.ancestors
+        next if ancestors.any? { |ancestor| SKIP_ELEMENTS.include?(ancestor.name) }
+        next if marked_only && ancestors.none? { |ancestor| marked?(ancestor) }
+
+        pieces = split_text(node.text)
+        [node, pieces] if pieces.any? { |piece| piece.is_a?(Formula) }
+      end
+    end
+
+    def self.marked?(element)
+      element.element? && (element.classes & MARKED_CLASSES).any?
     end
 
     # key => PNG bytes, only for the formulas that could be rendered.
