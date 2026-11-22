@@ -41,6 +41,10 @@ aislados.
 `RedmineCbotsLatex::LatexRenderer.render_html(html)` reemplaza fórmulas
 reconocidas por imágenes PNG, usando la configuración del plugin. También admite
 `python_bin:` y `cache_dir:` para que un plugin consumidor reutilice su entorno.
+Por defecto reconoce `$…$`, `$$…$$`, `\(…\)` y `\[…\]` en todo el HTML. Con
+`marked_only: true` solo convierte las fórmulas de las macros y de la clase
+`redmine-latex-content`, es decir, lo mismo que dibuja MathJax en el navegador;
+un `$` en el texto wiki queda como texto en pantalla y en el documento.
 Utiliza `matplotlib.mathtext`,
 no una distribución TeX completa; fórmulas no compatibles quedan como texto.
 Para esta función se necesita Python 3 con `matplotlib`. Las macros del navegador
@@ -48,8 +52,8 @@ no requieren esa dependencia. El plugin no intercepta automáticamente todos los
 exportadores de Redmine; el plugin consumidor debe invocar la API en su salida
 estática.
 
-La exportación de informes de cosmoSys incluye las fórmulas como imágenes
-conservando su tamaño tipográfico. Se admiten `\lvert` y `\rvert` para
+La exportación de informes de cosmoSys incluye las fórmulas de las macros como
+imágenes conservando su tamaño tipográfico. Se admiten `\lvert` y `\rvert` para
 representar el valor absoluto.
 
 El plugin Notebook Preview puede usar esta API para convertir fórmulas de la
